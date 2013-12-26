@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>scope lookup</title>
+</head>
+<body>
+	<script>
+		/**
+		 * Title: scope lookup
+		 * Description: reduce the number of times to scope lookup
+		 * References: http://velocityconf.com/velocityeu/public/schedule/detail/21634
+		 */
+
+		 (function() {
+			if (window.confirm('Do you want to append?')) {
+				var p = document.createElement('p');
+				document.body.appendChild(p);
+			}
+		})();
+
+		 // optimization 1 - lookup once, then cache
+		(function() {
+			var win = window,
+				doc = document;
+			if (win.confirm('Do you want to append?')) {
+				var p = doc.createElement('p');
+				doc.body.appendChild(p);
+			}
+		})();
+
+		 // preferred - no scope lookup
+		(function(win, doc) {
+			if (win.confirm('Do you want to append?')) {
+				var p = doc.createElement('p');
+				doc.body.appendChild(p);
+			}
+		})(window, document);
+	</script>
+</body>
+</html>
